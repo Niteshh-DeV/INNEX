@@ -81,6 +81,9 @@
 *.woff2              filter=lfs diff=lfs merge=lfs -text
 *.eot                filter=lfs diff=lfs merge=lfs -text
 
+# Keep the registration QR available to hosts that do not fetch Git LFS objects.
+public/images/registration-qr.png -filter -diff -merge
+
 # ---------------------------------------------------------------------------
 # Data & Machine Learning
 # ---------------------------------------------------------------------------
