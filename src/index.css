@@ -1,0 +1,228 @@
+@import 'tailwindcss';
+
+/* Exact faces from the INNEX 1.0 Figma file. */
+@font-face {
+  font-family: "Chakra Petch:Medium";
+  src: url("https://static.figma.com/font/ChakraPetch-Medium_1") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Chakra Petch:SemiBold";
+  src: url("https://static.figma.com/font/ChakraPetch-SemiBold_1") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2:Medium";
+  src: url("https://static.figma.com/font/Exo2_wght__2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2:Regular";
+  src: url("https://static.figma.com/font/Exo2_wght__2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans Math:Regular";
+  src: url("https://static.figma.com/font/NotoSansMath-Regular_1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans Symbols2:Regular";
+  src: url("https://static.figma.com/font/NotoSansSymbols2-Regular_5") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans Symbols:Regular";
+  src: url("https://static.figma.com/font/NotoSansSymbols-VF_2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans:Regular";
+  src: url("https://static.figma.com/font/NotoSans-VF_3") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Orbitron:Bold";
+  src: url("https://static.figma.com/font/Orbitron_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Orbitron:Regular";
+  src: url("https://static.figma.com/font/Orbitron_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Oxanium:Light";
+  src: url("https://static.figma.com/font/Oxanium_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Oxanium:Medium";
+  src: url("https://static.figma.com/font/Oxanium_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Share Tech Mono:Regular";
+  src: url("https://static.figma.com/font/ShareTechMono-Regular_1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@theme {
+  /* Brand palette */
+  --color-ink: #14214f;
+  --color-blue: #1b6db5;
+  --color-amber: #f9a53c;
+  /* Amber for small text on white/ivory: same hue, 4.9:1 contrast. */
+  --color-amber-ink: #a85f00;
+  --color-bg-1: #f7f7fd;
+  --color-bg-2: #f0f2fb;
+  --color-lavender: #dfdafa;
+
+  /* Typography — one token per exact Figma face, symbol faces as glyph fallbacks */
+  --font-ox-light: "Oxanium:Light", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-ox-medium: "Oxanium:Medium", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-orbitron: "Orbitron:Regular", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-orbitron-bold: "Orbitron:Bold", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-chakra: "Chakra Petch:Medium", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-chakra-semibold: "Chakra Petch:SemiBold", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-exo: "Exo 2:Regular", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-exo-medium: "Exo 2:Medium", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
+  --font-mono: "Share Tech Mono:Regular", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", monospace;
+
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Hero entrance runs in CSS so it never waits on the main thread. */
+  --animate-rise: rise 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @keyframes rise {
+    from {
+      transform: translate3d(0, 110%, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 32px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  --animate-caret: caret 1.1s steps(1, end) infinite;
+  @keyframes caret {
+    0%,
+    55% {
+      opacity: 1;
+    }
+    56%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  --animate-scan: scan 2.6s ease-in-out infinite alternate;
+  @keyframes scan {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, var(--scan-distance, 240px), 0);
+    }
+  }
+
+}
+
+@layer base {
+  html {
+    background-color: var(--color-ink);
+  }
+
+  body {
+    background-color: var(--color-bg-1);
+    color: var(--color-ink);
+    font-family: var(--font-exo);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  section[id] {
+    scroll-margin-top: 92px;
+  }
+
+  ::selection {
+    background-color: var(--color-amber);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+  }
+}
+
+/* Hold the hero entrance while the launch loader is up (see BootLoader.tsx). */
+html[data-booting] .animate-rise,
+html[data-booting] .animate-fade-up {
+  animation-play-state: paused;
+}
+
+/* Scroll reveal (see components/primitives/Reveal.tsx). */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0);
+  transition:
+    opacity 0.7s var(--ease-luxe),
+    transform 0.7s var(--ease-luxe);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-caret,
+  .animate-scan,
+  .animate-rise,
+  .animate-fade-up {
+    animation: none;
+  }
+}
