@@ -1,7 +1,7 @@
 {
   "description": "INNEX 1.0 is Sudurpashchim's first national-level hackathon: 48 hours at the School of Engineering, Far Western University, 5–7 Mangsir 2083 B.S.",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
