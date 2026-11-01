@@ -71,6 +71,9 @@ function RegistrationCard() {
   const countdown = useCountdown(dates.registrationClosesISO)
   const { open } = useRegistration()
   const [daysLeft] = countdown
+  const qrSrc = registrationQr
+    ? `${import.meta.env.BASE_URL}${registrationQr.replace(/^\/+/, "")}`
+    : null
   // Urgency ramps up as the deadline approaches.
   const urgency = !open ? "closed" : daysLeft < 1 ? "final" : daysLeft < 7 ? "soon" : "normal"
   const label = !open
@@ -83,10 +86,10 @@ function RegistrationCard() {
 
   const qr = (
     <div className="relative flex h-[276px] w-full flex-col items-center justify-center gap-[6px] rounded-[2px] bg-white text-[12px] leading-[normal] text-ink">
-      {registrationQr ? (
+      {qrSrc ? (
         <>
           <img
-            src={registrationQr}
+            src={qrSrc}
             alt="QR code linking to the registration form"
             className="size-[236px] object-contain"
           />
