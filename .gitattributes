@@ -83,6 +83,7 @@
 
 # Keep the registration QR available to hosts that do not fetch Git LFS objects.
 public/images/registration-qr.png -filter -diff -merge
+public/og/innex-2026.png -filter -diff -merge
 
 # ---------------------------------------------------------------------------
 # Data & Machine Learning
