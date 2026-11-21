@@ -1,3 +1,4 @@
+import type { Edition } from "@content/types"
 import { useEdition } from "@/lib/edition-context"
 import { cn } from "@/lib/cn"
 import { AccentText } from "./primitives/AccentText"
@@ -80,8 +81,136 @@ function PortraitSlot({
   )
 }
 
+type PartnersContent = Edition["partners"]
+type Partner = PartnersContent["tiers"][number]["groups"][number]["partners"][number]
+type PartnerImage = NonNullable<Partner["images"]>[number]
+
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`
+
+/** Amber diamond from the sponsor board header. */
+function Diamond() {
+  return <span aria-hidden="true" className="size-[9px] shrink-0 rotate-45 bg-amber" />
+}
+
+/** A logo at its designed size; cropped artwork is placed inside a clipping box exactly as in Figma. */
+function PartnerArtwork({ image, alt }: { image: PartnerImage; alt: string }) {
+  const { crop } = image
+  return (
+    <span
+      className="relative block shrink-0 overflow-hidden"
+      style={{ width: image.width, height: image.height }}
+    >
+      <img
+        src={asset(image.src)}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className={cn(
+          "absolute max-w-none",
+          crop ? "object-cover" : "inset-0 size-full object-contain",
+        )}
+        style={crop && { left: crop.x, top: crop.y, width: crop.width, height: crop.height }}
+      />
+    </span>
+  )
+}
+
+function PartnerLogo({ partner }: { partner: Partner }) {
+  if (partner.wordmark) {
+    return (
+      <span
+        className="flex flex-col items-center text-center font-poppins"
+        style={{ width: partner.wordmark.width }}
+      >
+        {partner.wordmark.lines.map((line) => (
+          <span
+            key={line.text}
+            className={cn(
+              "block",
+              line.tone === "blue" ? "text-blue" : "text-ink",
+              line.weight === "extrabold" ? "font-extrabold" : "font-semibold",
+            )}
+            style={{
+              fontSize: line.size,
+              lineHeight: `${line.leading}px`,
+              letterSpacing: line.tracking,
+            }}
+          >
+            {line.text}
+          </span>
+        ))}
+      </span>
+    )
+  }
+  return (
+    <span className="flex items-center gap-[6px]">
+      {partner.images?.map((image, index) => (
+        <PartnerArtwork key={image.src} image={image} alt={index === 0 ? partner.name : ""} />
+      ))}
+    </span>
+  )
+}
+
+/** The "IN PARTNERSHIP WITH" board: role titles over logos, headline sponsors first. */
+function SponsorBoard({ partners }: { partners: PartnersContent }) {
+  return (
+    <div className="flex flex-col gap-10 rounded-[22px] border-2 border-lavender bg-white px-6 py-10 lg:px-10 lg:py-12">
+      <div className="flex items-center gap-3 sm:gap-5">
+        <span className="h-[2px] min-w-0 flex-1 bg-linear-to-r from-blue/0 to-blue/55" />
+        <Diamond />
+        <h3 className="text-center font-orbitron-bold text-[13px] leading-[normal] font-bold tracking-[0.2em] text-ink sm:text-[17px] sm:tracking-[0.28em]">
+          {partners.heading}
+        </h3>
+        <Diamond />
+        <span className="h-[2px] min-w-0 flex-1 bg-linear-to-l from-blue/0 to-blue/55" />
+      </div>
+      {partners.tiers.map((tier, tierIndex) => {
+        const large = tierIndex === 0
+        return (
+          <div
+            key={tierIndex}
+            className={cn(
+              "flex flex-wrap items-start justify-center gap-x-12 gap-y-8",
+              large ? "lg:gap-x-[72px]" : "border-t border-lavender pt-10",
+            )}
+          >
+            {tier.groups.map((group) => (
+              <div key={group.role} className="flex max-w-full flex-col items-center gap-[6px]">
+                <p
+                  className={cn(
+                    "text-center font-chakra-semibold leading-[normal] text-blue",
+                    large ? "text-[17px] tracking-[0.025em]" : "text-[15px] tracking-[0.06em]",
+                  )}
+                >
+                  {group.role}
+                </p>
+                <ul
+                  className={cn(
+                    "flex flex-wrap items-center justify-center gap-y-2",
+                    large ? "gap-x-3" : "gap-x-2.5",
+                  )}
+                >
+                  {group.partners.map((partner) => (
+                    <li
+                      key={partner.name}
+                      className="flex items-center justify-center"
+                      style={{ height: tier.logoHeight }}
+                    >
+                      <PartnerLogo partner={partner} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export function JudgesPartners() {
-  const { judges, partners, footer, name } = useEdition()
+  const { judges, partners } = useEdition()
 
   return (
     <section id="judges" className="bg-bg-1 text-ink">
@@ -110,59 +239,14 @@ export function JudgesPartners() {
           </div>
         </SplitHeader>
 
-        <SplitHeader
-          label={partners.label}
-          labelClassName="text-[13px] text-blue"
-        >
-          <div className="flex flex-col gap-7">
-            <Reveal index={1}>
-              <h3 className="font-chakra text-[28px] leading-[normal]">
-                {partners.heading}
-              </h3>
-            </Reveal>
-            <Reveal index={2}>
-              <ul className="grid grid-cols-2 border-y border-ink sm:grid-cols-3 lg:grid-cols-5">
-                {partners.logos.map((partner, index) => (
-                  <li
-                    key={index}
-                    className={cn(
-                      "flex h-[110px] items-center justify-center border-ink transition-colors duration-[400ms] hover:bg-white",
-                      "max-sm:[&:nth-child(2n)]:border-l max-sm:[&:nth-child(n+3)]:border-t",
-                      "sm:max-lg:[&:not(:nth-child(3n+1))]:border-l sm:max-lg:[&:nth-child(n+4)]:border-t",
-                      "lg:[&:not(:first-child)]:border-l",
-                    )}
-                  >
-                    {partner.logo ? (
-                      <img
-                        src={partner.logo}
-                        alt={partner.name ?? ""}
-                        className="max-h-12 max-w-[70%] object-contain"
-                      />
-                    ) : (
-                      <p className="font-mono text-[11px] leading-[normal] tracking-[0.16em] whitespace-nowrap">
-                        {partners.placeholder}
-                      </p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-            <Reveal index={3}>
-              <a
-                href={`mailto:${footer.contact.email}?subject=${encodeURIComponent(`${name} partnership`)}`}
-                className="group inline-flex items-center gap-2 transition-colors duration-[400ms] hover:text-blue"
-              >
-                <MonoLabel className="text-[11px]">{partners.note}</MonoLabel>
-                <span
-                  aria-hidden="true"
-                  className="font-mono text-[11px] transition-transform duration-[400ms] group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </a>
-            </Reveal>
-          </div>
-        </SplitHeader>
+        <div id="partners" className="flex flex-col gap-8">
+          <Reveal>
+            <MonoLabel className="text-[13px] text-blue">{partners.label}</MonoLabel>
+          </Reveal>
+          <Reveal index={1}>
+            <SponsorBoard partners={partners} />
+          </Reveal>
+        </div>
       </Container>
     </section>
   )

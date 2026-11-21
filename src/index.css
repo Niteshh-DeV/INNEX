@@ -1,3 +1,5 @@
+/* Poppins only sets the type-set partner wordmarks on the sponsor board. */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap");
 @import 'tailwindcss';
 
 /* Exact faces from the INNEX 1.0 Figma file. */
@@ -114,6 +116,7 @@
   --font-exo: "Exo 2:Regular", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
   --font-exo-medium: "Exo 2:Medium", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", sans-serif;
   --font-mono: "Share Tech Mono:Regular", "Noto Sans Math:Regular", "Noto Sans Symbols:Regular", "Noto Sans Symbols2:Regular", "Noto Sans:Regular", monospace;
+  --font-poppins: "Poppins", sans-serif;
 
   --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
 

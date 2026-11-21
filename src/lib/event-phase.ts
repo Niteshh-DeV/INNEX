@@ -30,5 +30,5 @@ export function useEventPhase() {
     return () => window.clearTimeout(id)
   }, [buildStart, buildEnd])
 
-  return { phase, buildEnd }
+  return { phase, buildStart, buildEnd }
 }

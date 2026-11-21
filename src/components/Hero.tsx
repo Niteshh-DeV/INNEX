@@ -116,9 +116,9 @@ function RegistrationCard() {
       <p className="font-ox-medium text-[36px] leading-[40px] font-medium text-ink">
         {open ? card.title : registrationClosed.cardTitle}
       </p>
-      <p className="font-exo text-[14px] leading-[normal] font-normal text-ink">
-        {open ? card.note : registrationClosed.cardNote}
-      </p>
+      {open && (
+        <p className="font-exo text-[14px] leading-[normal] font-normal text-ink">{card.note}</p>
+      )}
       {open &&
         (registrationUrl ? (
           <a
@@ -180,6 +180,21 @@ function RegistrationCard() {
               </div>
             ))}
           </div>
+          <div className="flex w-full flex-col items-start gap-[10px] border-t border-ink/10 pt-[18px]">
+            <MonoLabel className="text-[11px] text-amber-ink">
+              {registrationClosed.prizes.awardsLabel}
+            </MonoLabel>
+            {registrationClosed.prizes.awards.map(({ name, amount }) => (
+              <div key={name} className="flex w-full items-baseline justify-between gap-4">
+                <p className="min-w-0 font-exo text-[14px] leading-[normal] font-normal text-ink">
+                  {name}
+                </p>
+                <p className="shrink-0 font-orbitron text-[16px] leading-[normal] font-normal text-ink tabular-nums">
+                  {amount}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -204,6 +219,48 @@ function BuildCountdown({ end }: { end: number }) {
         </span>
       ))}
     </span>
+  )
+}
+
+/** Share of the build window already spent: a thin amber track with a diamond at its leading edge. */
+function BuildProgress({ start, end }: { start: number; end: number }) {
+  const { progress } = useEdition().hero.live
+  const [time, setTime] = useState(now)
+  useEffect(() => {
+    const id = window.setInterval(() => setTime(now()), 60_000)
+    return () => window.clearInterval(id)
+  }, [])
+  const share = Math.min(1, Math.max(0, (time - start) / (end - start)))
+  const percent = Math.floor(share * 100)
+
+  return (
+    <div className="flex w-full max-w-[560px] flex-col gap-3 font-mono text-[11px] leading-[normal] tracking-[0.16em]">
+      <div className="flex justify-between gap-4">
+        <span className="text-amber">{progress.label}</span>
+        <span className="text-white/70 tabular-nums">{`${String(percent).padStart(2, "0")}%  ${progress.elapsed}`}</span>
+      </div>
+      <div
+        role="progressbar"
+        aria-label={progress.label}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={percent}
+        className="relative h-[2px] w-full bg-white/15"
+      >
+        <div className="absolute inset-y-0 left-0 bg-amber" style={{ width: `${share * 100}%` }} />
+        {/* Halfway mark: 24 hours in. */}
+        <span aria-hidden="true" className="absolute top-1/2 left-1/2 h-2 w-px -translate-y-1/2 bg-white/40" />
+        <span
+          aria-hidden="true"
+          className="absolute top-1/2 size-[7px] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-amber"
+          style={{ left: `${share * 100}%` }}
+        />
+      </div>
+      <div className="flex justify-between gap-4 text-white/60">
+        <span>{progress.start}</span>
+        <span>{progress.end}</span>
+      </div>
+    </div>
   )
 }
 
@@ -251,7 +308,7 @@ function detailBorders(index: number) {
 export function Hero() {
   const { hero, registrationClosed, version } = useEdition()
   const registration = useRegistration()
-  const { phase, buildEnd } = useEventPhase()
+  const { phase, buildStart, buildEnd } = useEventPhase()
 
   // The headline follows the event: promise → live countdown → done.
   const eyebrow = phase === "live" ? hero.live.eyebrow : phase === "after" ? hero.after.eyebrow : hero.eyebrow
@@ -320,6 +377,11 @@ export function Hero() {
               {hero.secondaryCta}
             </Button>
           </div>
+          {phase === "live" && (
+            <div className="w-full animate-fade-up pt-4" style={{ animationDelay: "520ms" }}>
+              <BuildProgress start={buildStart} end={buildEnd} />
+            </div>
+          )}
         </div>
         <div className="animate-fade-up" style={{ animationDelay: "260ms" }}>
           <RegistrationCard />

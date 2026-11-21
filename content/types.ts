@@ -14,6 +14,38 @@ const stepSchema = z.object({
   body: z.string(),
 })
 
+/** A logo at its designed size in px; `crop` places an oversized source image inside that box. */
+const partnerImageSchema = z.object({
+  src: z.string(),
+  width: z.number(),
+  height: z.number(),
+  crop: z.optional(
+    z.object({ x: z.number(), y: z.number(), width: z.number(), height: z.number() }),
+  ),
+})
+
+const partnerSchema = z.object({
+  name: z.string(),
+  /** One image, or several side by side (e.g. a seal plus its wordmark). */
+  images: z.optional(z.array(partnerImageSchema)),
+  /** Type-set name logo for partners who supplied no artwork. */
+  wordmark: z.optional(
+    z.object({
+      width: z.number(),
+      lines: z.array(
+        z.object({
+          text: z.string(),
+          size: z.number(),
+          leading: z.number(),
+          tracking: z.number(),
+          tone: z.enum(["blue", "ink"]),
+          weight: z.enum(["semibold", "extrabold"]),
+        }),
+      ),
+    }),
+  ),
+})
+
 export const editionSchema = z.object({
   year: z.int(),
   name: z.string(),
@@ -71,7 +103,17 @@ export const editionSchema = z.object({
       skip: z.string(),
     }),
     /** Headline/eyebrow overrides while the build clock is running and after it ends. */
-    live: z.object({ eyebrow: z.string(), line2: z.string() }),
+    live: z.object({
+      eyebrow: z.string(),
+      line2: z.string(),
+      /** Bar under the CTAs showing how much of the build window has passed. */
+      progress: z.object({
+        label: z.string(),
+        elapsed: z.string(),
+        start: z.string(),
+        end: z.string(),
+      }),
+    }),
     after: z.object({ eyebrow: z.string(), headline: z.tuple([z.string(), z.string()]) }),
     hud: z.object({
       left: z.string(),
@@ -146,10 +188,12 @@ export const editionSchema = z.object({
   partners: z.object({
     label: z.string(),
     heading: z.string(),
-    note: z.string(),
-    placeholder: z.string(),
-    logos: z.array(
-      z.object({ name: z.nullable(z.string()), logo: z.nullable(z.string()) }),
+    tiers: z.array(
+      z.object({
+        /** Logo row height in px: headline sponsors sit larger than supporting partners. */
+        logoHeight: z.number(),
+        groups: z.array(z.object({ role: z.string(), partners: z.array(partnerSchema) })),
+      }),
     ),
   }),
   faq: z.object({
@@ -169,7 +213,6 @@ export const editionSchema = z.object({
     nav: z.string(),
     cardLabel: z.string(),
     cardTitle: z.string(),
-    cardNote: z.string(),
     cta: z.string(),
     ctaEyebrow: z.string(),
     href: z.string(),
@@ -178,6 +221,8 @@ export const editionSchema = z.object({
       label: z.string(),
       total: z.string(),
       places: z.array(z.object({ place: z.string(), amount: z.string() })),
+      awardsLabel: z.string(),
+      awards: z.array(z.object({ name: z.string(), amount: z.string() })),
     }),
   }),
   footer: z.object({
