@@ -26,8 +26,8 @@ export default editionSchema.parse({
     startISO: "2026-11-21T09:00:00+05:45",
     endISO: "2026-11-23T18:00:00+05:45",
     registrationClosesISO: "2026-11-13T23:59:59+05:45",
-    // TODO(organizers): confirm when the 48-hour clock starts on Day 01 (after the briefing).
-    buildStartISO: "2026-11-21T12:00:00+05:45",
+    // The 48-hour clock started at 12:35 NPT on Day 01, after the briefing.
+    buildStartISO: "2026-11-21T12:35:00+05:45",
   },
   registrationUrl: "https://forms.gle/ZAd2aRTDJbddKWJA7",
   // ICEC-FWU QR → q.me-qr.com redirect → the Google Form above.
