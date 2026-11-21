@@ -538,6 +538,7 @@ export default editionSchema.parse({
         { name: "Best Hardware / IoT Prototype", amount: "5K" },
         { name: "Best UI/UX and Presentation", amount: "5K" },
         { name: "Best Women-Led Team", amount: "10K" },
+        { name: "Best Git Commit", amount: "SURPRISE" },
       ],
     },
   },
