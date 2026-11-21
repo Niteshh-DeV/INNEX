@@ -173,6 +173,12 @@ export const editionSchema = z.object({
     cta: z.string(),
     ctaEyebrow: z.string(),
     href: z.string(),
+    /** Prize breakdown shown on the hero card in place of the registration countdown. */
+    prizes: z.object({
+      label: z.string(),
+      total: z.string(),
+      places: z.array(z.object({ place: z.string(), amount: z.string() })),
+    }),
   }),
   footer: z.object({
     tagline: z.string(),

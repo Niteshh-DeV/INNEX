@@ -378,6 +378,15 @@ export default editionSchema.parse({
     cta: "VIEW SCHEDULE  →",
     ctaEyebrow: "REGISTRATION CLOSED  ·  SEE YOU ON 5 MANGSIR",
     href: "#timeline",
+    prizes: {
+      label: "TOTAL PRIZE POOL  ·  NPR",
+      total: "1,15,000",
+      places: [
+        { place: "1ST", amount: "50K" },
+        { place: "2ND", amount: "25K" },
+        { place: "3RD", amount: "15K" },
+      ],
+    },
   },
   footer: {
     tagline: "Innovation × Excellence · Think. Build. Transform.",

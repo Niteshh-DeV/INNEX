@@ -158,6 +158,30 @@ function RegistrationCard() {
         ))}
       </div>
       )}
+      {!open && (
+        <div className="flex w-full flex-col items-start gap-[18px] border-t border-ink/10 pt-[18px]">
+          <div className="flex flex-col items-start gap-1">
+            <p className="font-orbitron text-[30px] leading-[34px] font-normal text-ink tabular-nums">
+              {registrationClosed.prizes.total}
+            </p>
+            <MonoLabel className="text-[11px] text-amber-ink">
+              {registrationClosed.prizes.label}
+            </MonoLabel>
+          </div>
+          <div className="flex w-full items-start border-t border-ink/10 pt-[18px]">
+            {registrationClosed.prizes.places.map(({ place, amount }) => (
+              <div key={place} className="flex min-w-0 flex-1 flex-col items-start gap-1">
+                <p className="font-orbitron text-[30px] leading-[34px] font-normal text-ink tabular-nums">
+                  {amount}
+                </p>
+                <p className="font-mono text-[11px] leading-[normal] tracking-[0.16em] text-amber-ink">
+                  {place}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
