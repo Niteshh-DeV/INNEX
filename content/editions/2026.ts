@@ -34,8 +34,8 @@ export default editionSchema.parse({
     startISO: "2026-11-21T09:00:00+05:45",
     endISO: "2026-11-23T18:00:00+05:45",
     registrationClosesISO: "2026-11-13T23:59:59+05:45",
-    // The 48-hour clock started at 12:35 NPT on Day 01, after the briefing.
-    buildStartISO: "2026-11-21T12:35:00+05:45",
+    // The 48-hour clock started at 12:45 NPT on Day 01, after the briefing.
+    buildStartISO: "2026-11-21T12:45:00+05:45",
   },
   registrationUrl: "https://forms.gle/ZAd2aRTDJbddKWJA7",
   // ICEC-FWU QR → q.me-qr.com redirect → the Google Form above.
@@ -81,8 +81,8 @@ export default editionSchema.parse({
       progress: {
         label: "48-HOUR BUILD",
         elapsed: "ELAPSED",
-        start: "5 MANGSIR · 12:35",
-        end: "7 MANGSIR · 12:35",
+        start: "5 MANGSIR · 12:45",
+        end: "7 MANGSIR · 12:45",
       },
     },
     after: { eyebrow: "INNEX 1.0  —  COMPLETE", headline: ["48 Hours.", "Built."] },
@@ -111,7 +111,7 @@ export default editionSchema.parse({
       },
       {
         label: "BUILD ENDS",
-        value: "7 Mangsir, 12:35",
+        value: "7 Mangsir, 12:45",
         note: "Then live demos, judging and awards",
       },
     ],
